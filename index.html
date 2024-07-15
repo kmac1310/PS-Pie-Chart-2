@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1440 Power System with Real-Time Minutes Remaining</title>
+</head>
+<body>
+    <div style="width: 100%; max-width: 600px; margin: auto;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140" style="width: 100%; height: auto;">
+            <rect width="100%" height="100%" fill="#a6b5c0"/>
+            <g transform="translate(60,60)">
+                <!-- Sleep Zone -->
+                <path d="M0,0 L50,0 A50,50 0 0,1 15.45,47.55 Z" fill="#32cd32"/>
+                <text class="segment-text" x="18" y="-15" fill="white" text-anchor="middle">Sleep Zone</text>
+                <text class="segment-time" x="18" y="-8" fill="white" text-anchor="middle">420 min</text>
+                
+                <!-- Livelihood Zone -->
+                <path d="M0,0 L15.45,47.55 A50,50 0 0,1 -43.3,-25 Z" fill="#3399ff"/>
+                <text class="segment-text" x="-20" y="15" fill="white" text-anchor="middle">Livelihood Zone</text>
+                <text class="segment-time" x="-20" y="22" fill="white" text-anchor="middle">600 min</text>
+                
+                <!-- On-Time Zone -->
+                <path d="M0,0 L-43.3,-25 A50,50 0 0,1 50,0 Z" fill="#ff4500"/>
+                <text class="segment-text" x="0" y="-30" fill="white" text-anchor="middle">On-Time Zone</text>
+                <text class="segment-time" x="0" y="-23" fill="white" text-anchor="middle">420 min</text>
+                
+                <!-- Gym/Fitness -->
+                <path d="M0,0 L50,0 A50,50 0 0,1 46.95,17.1 Z" fill="#ffa500"/>
+                <text class="segment-text small" x="47" y="8" fill="white" text-anchor="middle">Gym/Fitness</text>
+                <text class="segment-time small" x="47" y="13" fill="white" text-anchor="middle">60 min</text>
+                
+                <!-- Home Maintenance -->
+                <path d="M0,0 L46.95,17.1 A50,50 0 0,1 38.3,32.14 Z" fill="#8a2be2"/>
+                <text class="segment-text small" x="41" y="24" fill="white" text-anchor="middle">Home</text>
+                <text class="segment-text small" x="41" y="28" fill="white" text-anchor="middle">Maintenance</text>
+                <text class="segment-time small" x="41" y="32" fill="white" text-anchor="middle">60 min</text>
+                
+                <!-- AI Technology Study -->
+                <path d="M0,0 L38.3,32.14 A50,50 0 0,1 25,43.3 Z" fill="#20b2aa"/>
+                <text class="segment-text small" x="30" y="37" fill="white" text-anchor="middle">AI Tech</text>
+                <text class="segment-text small" x="30" y="41" fill="white" text-anchor="middle">Study</text>
+                <text class="segment-time small" x="30" y="45" fill="white" text-anchor="middle">60 min</text>
+                
+                <!-- Other personal activities -->
+                <path d="M0,0 L25,43.3 A50,50 0 0,1 -43.3,-25 Z" fill="#dda0dd"/>
+                <text class="segment-text" x="-20" y="35" fill="white" text-anchor="middle">Other personal</text>
+                <text class="segment-text" x="-20" y="40" fill="white" text-anchor="middle">activities</text>
+                <text class="segment-time" x="-20" y="45" fill="white" text-anchor="middle">240 min</text>
+
+                <!-- Pointer -->
+                <line id="pointer" x1="0" y1="0" x2="0" y2="-50" stroke="black" stroke-width="1">
+                    <animateTransform
+                        attributeName="transform"
+                        type="rotate"
+                        from="0 0 0"
+                        to="360 0 0"
+                        dur="24s"
+                        repeatCount="indefinite"/>
+                </line>
+            </g>
+
+            <!-- Title -->
+            <text x="60" y="15" font-size="6" font-weight="bold" fill="black" text-anchor="middle">The 1440 Power System</text>
+            
+            <!-- Key Concepts -->
+            <text x="60" y="110" font-size="4" fill="black" text-anchor="middle">Key Concepts: Productivity, Balance, Time Management</text>
+
+            <!-- Real-Time Minutes Remaining -->
+            <text id="timeRemaining" x="60" y="130" font-size="5" fill="#333" text-anchor="middle">Minutes left today: Calculating...</text>
+
+            <style>
+                .segment-text { font-size: 2.5px; }
+                .segment-time { font-size: 2px; }
+                .small { font-size: 1.8px; }
+                @media (min-width: 400px) {
+                    .segment-text { font-size: 3px; }
+                    .segment-time { font-size: 2.5px; }
+                    .small { font-size: 2.2px; }
+                }
+                @media (min-width: 600px) {
+                    .segment-text { font-size: 3.5px; }
+                    .segment-time { font-size: 3px; }
+                    .small { font-size: 2.5px; }
+                }
+            </style>
+        </svg>
+    </div>
+
+    <script>
+        function updateTimeRemaining() {
+            const now = new Date();
+            const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
+            const timeRemaining = endOfDay - now;
+            const minutesRemaining = Math.floor(timeRemaining / 60000);
+            
+            const timeRemainingElement = document.getElementById('timeRemaining');
+            timeRemainingElement.textContent = `Minutes left today: ${minutesRemaining}`;
+
+            // Update pointer position
+            const totalMinutesInDay = 1440;
+            const minutesPassed = totalMinutesInDay - minutesRemaining;
+            const degrees = (minutesPassed / totalMinutesInDay) * 360;
+            const pointer = document.getElementById('pointer');
+            pointer.setAttribute('transform', `rotate(${degrees} 0 0)`);
+        }
+
+        // Update every second
+        setInterval(updateTimeRemaining, 1000);
+
+        // Initial update
+        updateTimeRemaining();
+    </script>
+</body>
+</html>
